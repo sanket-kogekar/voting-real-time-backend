@@ -5,10 +5,10 @@ const io = require("socket.io")(http, {
     origin: [
       "http://localhost:3000",
       "http://localhost:3000/",
-      "https://easy-voting.netlify.app/",
-      "http://easy-voting.netlify.app/",
-      "http://easy-voting.netlify.app",
-      "https://easy-voting.netlify.app",
+      "https://easy-voting-site.netlify.app/",
+      "http://easy-voting-site.netlify.app/",
+      "http://easy-voting-site.netlify.app",
+      "https://easy-voting-site.netlify.app",
     ],
   },
 });
