@@ -16,6 +16,7 @@ const port = process.env.PORT || 5000;
 
 let sockets = [];
 let pollQuestion = "";
+let adminData = null;
 
 const getPrecretedQuestion = () => {
   return pollQuestion;
@@ -25,14 +26,25 @@ io.on("connection", (socket) => {
   socket.join("WaitingRoom");
   sockets.push(socket);
 
-  socket.on("start-voting", (questionValue) => {
-    pollQuestion = questionValue;
+  socket.on("disconnect", () => {
+    if (!!adminData && !!adminData.id && socket.id === adminData.id) {
+      pollQuestion = "";
+      adminData = null;
+      socket.to("WaitingRoom").emit("new-question", pollQuestion);
+    }
+  });
+
+  socket.on("start-voting", (questionObject) => {
+    pollQuestion = questionObject.question;
+    adminData = {
+      id: socket.id,
+      email: questionObject.email,
+    };
     socket.to("WaitingRoom").emit("new-question", pollQuestion);
   });
 
   socket.on("fetch-pre-created-question", () => {
     const preCreatedQuestion = getPrecretedQuestion();
-    console.log("preCreatedQuestion", preCreatedQuestion);
     socket.emit("fetch-pre-created-question", preCreatedQuestion);
   });
 
