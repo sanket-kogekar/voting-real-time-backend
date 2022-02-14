@@ -43,6 +43,10 @@ io.on("connection", (socket) => {
     socket.to("WaitingRoom").emit("new-question", pollQuestion);
   });
 
+  socket.on("share-results", (resultObject) => {
+    socket.to("WaitingRoom").emit("last-vote-results", resultObject);
+  });
+
   socket.on("fetch-pre-created-question", () => {
     const preCreatedQuestion = getPrecretedQuestion();
     socket.emit("fetch-pre-created-question", preCreatedQuestion);
