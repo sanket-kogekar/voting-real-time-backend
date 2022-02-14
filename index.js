@@ -44,6 +44,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("share-results", (resultObject) => {
+    console.log("resultObject", resultObject);
     socket.to("WaitingRoom").emit("last-vote-results", resultObject);
   });
 
